@@ -17,6 +17,10 @@ import Viewscategorie from './components/scategories/Viewscategorie';
 import Menu from './components/Menu';
 import Listarticlescard from "./components/client/Listarticlescard";
 import ArticlesListUSP from "./components/articles/ArticlesListUSP";
+import Login from './components/authentification/login'
+import Dashboard from './components/admin/dashboard';
+import Logout from './components/authentification/logout'
+import Register from './components/client/authentification/register'
 
 function App() {
   
@@ -40,7 +44,10 @@ function App() {
 <Route path="/scategories/add" element={<Insertscategorie/>}/>
 <Route path="/scategories/edit/:id" element={<Editscategorie/>}/>
 <Route path="/scategories/view/:id" element={<Viewscategorie/>}/>
-
+<Route path="/login" element={<Login/>}/>
+<Route path="/logout" element={<Logout/>}/>
+<Route path="/register" element={<Register/>}/>
+<Route path="/dashboard" element={<Dashboard/>}/>
 </Routes>
 </Router>
 
