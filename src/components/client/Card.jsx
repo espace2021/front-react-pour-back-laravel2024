@@ -1,17 +1,42 @@
 import React from 'react';
+import { useShoppingCart} from 'use-shopping-cart';
 import './stylecard.css';
 
-const Card = ({ imageart, reference, designation,prix }) => {
+const Card = ({ article }) => {
+  const { addItem } = useShoppingCart();
+
+  const addToCart = (product) => {
+      
+    const target = { 
+    id : product.id,
+    title : product.designation,
+    image : product.imageart,
+    price : product.prix,
+    qtestock : product.qtestock,
+    quantity : 1
+    };
+    addItem(target);
+    console.log('Item added to cart:', target);
+   
+  };
+
   return (
     <div className="card">
-      {imageart && <img src={imageart} alt={reference} />}
+      {article.imageart && <img src={article.imageart} alt={article.reference} />}
       <div className="card-content">
-        <h1 className="card-title">{reference}</h1>
-        <p className="card-description">{designation.substr(0,20)}</p>
-        <h1 className="card-title">Prix : {prix} TND</h1>
+        <h1 className="card-title">{article.reference}</h1>
+        <p className="card-description">{article.designation.substr(0,20)}</p>
+        <h1 className="card-title">Prix : {article.prix} TND</h1>
        
        
-        <button className="card-button"><i className="fa-solid fa-basket-shopping"></i>Add to card</button>
+        <button
+  disabled={article.qtestock <= 1}
+  className="card-button"
+  onClick={() => addToCart(article)}>
+  <i className="fa-solid fa-basket-shopping"></i>
+  Add to cart
+ </button>
+
       </div>
     </div>
   );

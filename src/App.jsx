@@ -3,6 +3,8 @@ import { BrowserRouter as Router,Routes, Route } from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import "@fortawesome/fontawesome-free/css/all.css";
 
+import { CartProvider } from "use-shopping-cart";
+
 import Liste from './Liste';
 import ListeCateg from './ListeCategories';
 import Listarticles from './components/articles/Listarticles';
@@ -26,12 +28,13 @@ import Logout from './components/authentification/logout'
 import Register from './components/client/authentification/register'
 import ProtectedRoutes from "./ProtectedRoute";
 
+import Cart from './components/client/shopping/Cart'
+
 function App() {
-  
-  console.log(localStorage.getItem("CC_Token"));
 
   return (
     <>
+    <CartProvider>
       <Router>
         <Menu/>
 <Routes>
@@ -57,9 +60,10 @@ function App() {
 <Route element={<ProtectedRoutes/>}>
 <Route path="/dashboard" element={<Dashboard/>}/>
 </Route>
+<Route path='/cart' element={<Cart/>}/>
 </Routes>
 </Router>
-
+</CartProvider>
     </>
   )
 }

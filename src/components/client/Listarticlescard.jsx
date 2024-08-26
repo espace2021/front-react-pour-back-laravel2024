@@ -47,12 +47,8 @@ const Listarticlescard = () => {
     <>
  <div className="card-container">
       {articles.map((art,index)=>
-        <Card key={index} imageart={art.imageart}
-        reference={art.reference}
-        designation={art.designation}
-        prix={art.prix}
+        <Card key={index} article={art}
         />
-
 
       )}
       
