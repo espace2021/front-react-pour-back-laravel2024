@@ -31,7 +31,6 @@ export function getAxiosInstance() {
 axios.interceptors.request.use(
 
   config => {
-
      const token=localStorage.getItem("CC_Token");
       if (token) { console.log(localStorage.getItem("CC_Token"))
 
@@ -78,7 +77,7 @@ console.log(error)
                 console.log(res.status)
                   // 1) put tokens to LocalStorage
 
-                 localStorage.setItem('CC_Token', res.data.token);
+              localStorage.setItem('CC_Token', res.data.access_token);
    
             
                  // 2) Change Authorization header
