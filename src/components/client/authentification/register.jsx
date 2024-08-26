@@ -7,8 +7,7 @@ import './registerForm.css';
 const RegisterForm = () => {
 
   const navigate = useNavigate();
-  const dispatch = useDispatch();
-  
+   
   
   const [name,setName]=useState("")
   const [email, setEmail] = useState("");
@@ -26,12 +25,14 @@ const RegisterForm = () => {
           name:name,
           email:email,
           password:password,
+          password_confirmation:password2,
           role:'user',
           avatar:avatar
           }
   
           signup(userData).then((res) => { console.log(res)
-              navigate('/login')
+            if(res)  navigate('/login')
+            else alert("Register with errors");
           })
           .catch((err) => {alert("Register with errors");console.log(err)})
   

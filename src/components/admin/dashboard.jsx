@@ -9,6 +9,7 @@ function Dashboard() {
      if(response.data)   setname(response.data.name)
     })
     }, []);
+
     return ( 
     <>
     <h1>Dashboard</h1>

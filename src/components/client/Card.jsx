@@ -11,7 +11,7 @@ const Card = ({ imageart, reference, designation,prix }) => {
         <h1 className="card-title">Prix : {prix} TND</h1>
        
        
-        <button className="card-button"><i class="fa-solid fa-basket-shopping"></i>Add to card</button>
+        <button className="card-button"><i className="fa-solid fa-basket-shopping"></i>Add to card</button>
       </div>
     </div>
   );

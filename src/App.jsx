@@ -2,6 +2,9 @@ import { BrowserRouter as Router,Routes, Route } from "react-router-dom";
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import "@fortawesome/fontawesome-free/css/all.css";
+
+import Liste from './Liste';
+import ListeCateg from './ListeCategories';
 import Listarticles from './components/articles/Listarticles';
 import Insertarticle from './components/articles/Insertarticle';
 import Editarticle from './components/articles/Editarticle';
@@ -21,15 +24,19 @@ import Login from './components/authentification/login'
 import Dashboard from './components/admin/dashboard';
 import Logout from './components/authentification/logout'
 import Register from './components/client/authentification/register'
+import ProtectedRoutes from "./ProtectedRoute";
 
 function App() {
   
+  console.log(localStorage.getItem("CC_Token"));
 
   return (
     <>
       <Router>
         <Menu/>
 <Routes>
+<Route path="/liste" element={<Liste/>}/>
+<Route path="/listeCateg" element={<ListeCateg/>}/>
 <Route path="/articles"  element={<Listarticles/>}/>
 <Route path="/articlescard"  element={<Listarticlescard/>}/>
 <Route path="/articles/add" element={<Insertarticle/>}/>
@@ -47,7 +54,9 @@ function App() {
 <Route path="/login" element={<Login/>}/>
 <Route path="/logout" element={<Logout/>}/>
 <Route path="/register" element={<Register/>}/>
+<Route element={<ProtectedRoutes/>}>
 <Route path="/dashboard" element={<Dashboard/>}/>
+</Route>
 </Routes>
 </Router>
 

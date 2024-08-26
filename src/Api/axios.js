@@ -61,18 +61,21 @@ console.log(response)
 function (error) {
 
   const originalRequest = error.config;
-console.log(error.response)
+console.log(error)
   if (error.response.status === 401 && !originalRequest._retry) {
-
+      console.log("Error 401 detected")
  
       originalRequest._retry = true;
-
-        return axios
-         .post(axios.defaults.baseURL+'users/refreshToken/')
-          .then(res => { console.log(res)
+  console.log(localStorage.getItem("CC_Token") )
+        return axios.post(axios.defaults.baseURL + 'users/refreshToken/',null,  {
+          headers: { 'Authorization': 'Bearer ' + localStorage.getItem("CC_Token") }
+        })
+          .then(res => { 
+            console.log('req refresh')
+            console.log(res)
 
               if (res.status === 200) { 
-
+                console.log(res.status)
                   // 1) put tokens to LocalStorage
 
                  localStorage.setItem('CC_Token', res.data.token);
