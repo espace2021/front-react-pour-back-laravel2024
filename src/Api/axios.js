@@ -7,7 +7,7 @@ baseURL:"http://localhost:8000/api/"
 
 import axios from "axios";
 
-axios.defaults.baseURL = "http://localhost:8000/api/"
+axios.defaults.baseURL = "https://projet-laravel2024.vercel.app/api/api/"
 
 
 //simple request sans header
