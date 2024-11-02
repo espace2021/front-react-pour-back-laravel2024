@@ -5,8 +5,7 @@ import './stylecard.css';
 const Card = ({ article }) => {
   const { addItem } = useShoppingCart();
 
-  const addToCart = (product) => {
-      
+  const addToCart = (product) => { 
     const target = { 
     id : product.id,
     title : product.designation,

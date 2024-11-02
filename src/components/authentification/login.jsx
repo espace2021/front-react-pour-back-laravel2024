@@ -69,7 +69,7 @@ signin(objetuser).then((result)=>{
             />
           </div>
         </div>
-        <button type="submit">Log In</button>
+        <button className="button" type="submit">Log In</button>
       </form>
       
       <Link href="#" to="/register">

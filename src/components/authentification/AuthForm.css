@@ -64,7 +64,7 @@
   box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
 }
 
-button {
+.button {
   width: 100%;
   padding: 1rem; /* Augmenté de 0.75rem à 1rem */
   border: none;
@@ -76,7 +76,7 @@ button {
   transition: background-color 0.3s ease;
 }
 
-button:hover {
+.button:hover {
   background-color: #0056b3;
 }
 

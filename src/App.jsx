@@ -1,16 +1,12 @@
+
 import { BrowserRouter as Router,Routes, Route } from "react-router-dom";
-
-import 'bootstrap/dist/css/bootstrap.min.css';
-import "@fortawesome/fontawesome-free/css/all.css";
-
+import { lazy, Suspense } from 'react';
 import { CartProvider } from "use-shopping-cart";
 
-import Liste from './Liste';
+const Liste = lazy(() => import('./Liste'));
+
 import ListeCateg from './ListeCategories';
 import Listarticles from './components/articles/Listarticles';
-import Insertarticle from './components/articles/Insertarticle';
-import Editarticle from './components/articles/Editarticle';
-import Viewarticle from './components/articles/Viewarticle';
 import Listcategories from './components/categories/Listcategories';
 import Insertcategorie from './components/categories/Insertcategorie';
 import Editcategorie from './components/categories/Editcategorie';
@@ -19,7 +15,7 @@ import Listscategories from './components/scategories/Listscategories';
 import Insertscategorie from './components/scategories/Insertscategorie';
 import Editscategorie from './components/scategories/Editscategorie';
 import Viewscategorie from './components/scategories/Viewscategorie';
-import Menu from './components/Menu';
+
 import Listarticlescard from "./components/client/Listarticlescard";
 import ArticlesListUSP from "./components/articles/ArticlesListUSP";
 import Login from './components/authentification/login'
@@ -30,21 +26,41 @@ import ProtectedRoutes from "./ProtectedRoute";
 
 import Cart from './components/client/shopping/Cart'
 
+import Menu from './components/Menu';
+
+import ListArticlea from "./components/article/ListArticle";
+import Insertarticlea from './components/article/Insertarticle';
+import Editarticlea from './components/article/Editarticle';
+import Viewarticlea from './components/article/Viewarticle';
+
+import ListCards from './components/clientSide/ListCards';
+
 function App() {
 
   return (
     <>
+
+<Suspense fallback={<div>Loading...</div>}>
     <CartProvider>
       <Router>
         <Menu/>
+
 <Routes>
+
+<Route path='/' element={<ListCards/>}/>
+
+<Route path="/articlesa" element={<ListArticlea/>}/>
+
+
+<Route path="/articlesa/add" element={<Insertarticlea/>}/>
+<Route path="/articlea/edit/:id" element={<Editarticlea/>}/>
+<Route path="/articlea/view/:id" element={<Viewarticlea/>}/>
+
+
 <Route path="/liste" element={<Liste/>}/>
 <Route path="/listeCateg" element={<ListeCateg/>}/>
 <Route path="/articles"  element={<Listarticles/>}/>
 <Route path="/articlescard"  element={<Listarticlescard/>}/>
-<Route path="/articles/add" element={<Insertarticle/>}/>
-<Route path="/article/edit/:id" element={<Editarticle/>}/>
-<Route path="/article/view/:id" element={<Viewarticle/>}/>
 <Route path="/articlesListUSP" element={<ArticlesListUSP/>}/>
 <Route path="/categories" exact element={<Listcategories/>}/>
 <Route path="/categories/add" element={<Insertcategorie/>}/>
@@ -61,9 +77,12 @@ function App() {
 <Route path="/dashboard" element={<Dashboard/>}/>
 </Route>
 <Route path='/cart' element={<Cart/>}/>
+
 </Routes>
+
 </Router>
 </CartProvider>
+</Suspense>
     </>
   )
 }

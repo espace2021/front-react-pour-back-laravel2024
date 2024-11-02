@@ -56,9 +56,13 @@ const Editarticle = ({show,handleClose,fetchProducts,art,limit}) => {
   const serverOptions = () => { console.log('server pond');
     return {
       load: (source, load, error, progress, abort, headers) => {
+      
         var myRequest = new Request(source);
+        console.log("myRequest : ",myRequest);
         fetch(myRequest).then(function(response) {
+          console.log("response : ",response);
           response.blob().then(function(myBlob) {
+            console.log("myBlob : ",myBlob);
             load(myBlob);
           });
         });

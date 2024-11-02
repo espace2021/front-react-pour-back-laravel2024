@@ -1,82 +1,62 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useShoppingCart } from 'use-shopping-cart';
 import { Link } from 'react-router-dom';
 import './panier.css';
+import axios from "../../../Api/axios";
 import { loadStripe } from '@stripe/stripe-js';
-import { Elements, useStripe} from '@stripe/react-stripe-js';
+import { Elements, CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
 
 const stripePromise = loadStripe('pk_test_51KtYRUD3HS4vNAwatvmqAEXLKKX11UOcpkHfLnw9UPI9kZ7AJCOeLkqik61wHFXLmRGHUd4aNBvp45v82DpskKl300bMfznwlE');
 
 const Cart = () => {
   const { cartDetails, removeItem, clearCart, totalPrice, cartCount, incrementItem, decrementItem } = useShoppingCart();
   const stripe = useStripe();
+  const elements = useElements();
 
-  const handleCheckout = async (event) => {
-    event.preventDefault()
- 
+  const [paymentProcessing, setPaymentProcessing] = useState(false);
 
-    if (!stripe) {
-      console.error('Stripe has not loaded yet')
-      return
+  const handleSubmit = async (event) => {
+
+    event.preventDefault();
+    setPaymentProcessing(true);
+
+    const cardElement = elements.getElement(CardElement); 
+
+    if (!cardElement) {
+      console.error('CardElement not found');
+      return;
     }
 
-    try {
-      const items = Object.values(cartDetails).map((item) => ({
-        price_data: {
-          currency: 'usd',
-          product_data: {
-            name: item.title,
-            images: item.image ? [item.image] : [],
-          },
-          unit_amount: Math.round(item.price),
-        },
-        quantity: item.quantity,
-      }))
-
-      console.log('Sending to checkout:', items)
-
-        const response = await fetch('http://localhost:8000/api/payment/processpayment', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-        },
-        body: JSON.stringify({
-          line_items: items,
-          success_url: `${window.location.origin}/success`,
-          cancel_url: `${window.location.origin}/cart`
-        })
-      })
-
-      if (!response.ok) {
-        const errorData = await response.json()
-        throw new Error(errorData.error || 'Network response was not ok')
-      }
-
-      const data = await response.json()
-      console.log('Response from server:', data)
-
-      if (data.id) {
-        const result = await stripe.redirectToCheckout({
-          sessionId: data.id
-        })
-
-        if (result.error) {
-          console.error('Stripe redirect error:', result.error)
-          throw new Error(result.error.message)
-        }
-      } else {
-        throw new Error('No session ID received from server')
-      }
-    } catch (error) {
-      console.error('Checkout error:', error)
-      alert('Payment failed: ' + error.message)
+   
+    const {error, token} = await stripe.createToken(cardElement)
+    if (error) {
+      console.log('[error]', error);
+    } else {
+      console.log('[TOKEN]', token);
+    
     }
-  }
+
+   await axios.post('/payment/processpayment', {
+      amount: totalPrice*100,
+      token:token.id
+    })  .then(res => {
+     alert(res.data.message) 
+    setPaymentProcessing(false)
+    })
+    .catch(err => {
+    console.error(err.response.data.message)
+    });
+
+  };
 
   return (
     <div className="cart-container">
- 
+      {paymentProcessing ?   <form onSubmit={handleSubmit}>
+      <CardElement />
+      <button type="submit" disabled={!stripe}>
+        Pay
+      </button>
+    </form> : null}
       <h2>Shopping Cart</h2>
       {cartCount === 0 ? (
         <div className="cart-empty">
@@ -133,7 +113,8 @@ const Cart = () => {
                 <span className="amount">{totalPrice} TND</span>
               </div>
               <p>Taxes and shipping calculated at checkout</p>
-              <button onClick={handleCheckout} > Ckeck Out
+              <button onClick={() => setPaymentProcessing(true)} disabled={paymentProcessing}>
+                {paymentProcessing ? "Loading..." : "Check Out" }
               </button>
               <div className="continue-shopping">
                 <Link to="/articlescard">
