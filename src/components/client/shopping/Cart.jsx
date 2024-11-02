@@ -2,12 +2,9 @@ import React from 'react';
 import { useShoppingCart } from 'use-shopping-cart';
 import { Link } from 'react-router-dom';
 import './panier.css';
-import { loadStripe } from '@stripe/stripe-js';
-import { Elements, useStripe} from '@stripe/react-stripe-js';
+import {  useStripe} from '@stripe/react-stripe-js';
 
-const stripePromise = loadStripe('pk_test_51KtYRUD3HS4vNAwatvmqAEXLKKX11UOcpkHfLnw9UPI9kZ7AJCOeLkqik61wHFXLmRGHUd4aNBvp45v82DpskKl300bMfznwlE');
-
-const Cart = () => {
+function Cart ()  {
   const { cartDetails, removeItem, clearCart, totalPrice, cartCount, incrementItem, decrementItem } = useShoppingCart();
   const stripe = useStripe();
 
@@ -35,8 +32,9 @@ const Cart = () => {
 
       console.log('Sending to checkout:', items)
 
-        const response = await fetch('http://localhost:8000/api/payment/processpayment', {
-        method: 'POST',
+       // const response = await fetch('http://localhost:8000/api/payment/processpayment', {
+        const response = await fetch('https://projet-laravel2024.vercel.app/api/api/payment/processpayment', {
+       method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json'
@@ -148,10 +146,5 @@ const Cart = () => {
   );
 };
 
-const Wrapper = (props) => (
-  <Elements stripe={stripePromise}>
-    <Cart {...props} />
-  </Elements>
-);
 
-export default Wrapper;
+export default Cart;

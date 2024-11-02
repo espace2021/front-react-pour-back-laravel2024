@@ -2,6 +2,8 @@
 import { BrowserRouter as Router,Routes, Route } from "react-router-dom";
 import { lazy, Suspense } from 'react';
 import { CartProvider } from "use-shopping-cart";
+import { stripePromise } from './lib/stripe'
+import { Elements } from '@stripe/react-stripe-js'
 
 const Liste = lazy(() => import('./Liste'));
 
@@ -25,6 +27,7 @@ import Register from './components/client/authentification/register'
 import ProtectedRoutes from "./ProtectedRoute";
 
 import Cart from './components/client/shopping/Cart'
+import Success from './components/client/shopping/Success'
 
 import Menu from './components/Menu';
 
@@ -38,7 +41,7 @@ import ListCards from './components/clientSide/ListCards';
 function App() {
 
   return (
-    <>
+    <Elements stripe={stripePromise}>
 
 <Suspense fallback={<div>Loading...</div>}>
     <CartProvider>
@@ -77,13 +80,13 @@ function App() {
 <Route path="/dashboard" element={<Dashboard/>}/>
 </Route>
 <Route path='/cart' element={<Cart/>}/>
-
+<Route path='/success' element={<Success/>}/>
 </Routes>
 
 </Router>
 </CartProvider>
 </Suspense>
-    </>
+</Elements>
   )
 }
 
